@@ -1,0 +1,59 @@
+# .gitignore for Large File Upload Solution
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+out/
+bin/
+obj/
+generated/
+
+# Azure Functions
+local.settings.json
+__blobstorage__
+__queuestorage__
+__azurite_db*__
+.python_packages/
+
+# Credentials (IMPORTANT: Never commit these!)
+SITE_ID.txt
+FUNCTION_URL.txt
+DEPLOYMENT_INFO.txt
+*.key
+*.secret
+*.ps1
+azure-function-deploy.zip
+temp-deploy/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# PCF
+*.pcfproj.user

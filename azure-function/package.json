@@ -1,0 +1,22 @@
+{
+  "name": "sharepoint-upload-function",
+  "version": "1.0.0",
+  "description": "Azure Function to create SharePoint upload sessions",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.x",
+    "@types/node-fetch": "^2.6.11",
+    "typescript": "^5.3.3",
+    "azure-functions-core-tools": "^4.x"
+  }
+}
