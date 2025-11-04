@@ -80,7 +80,9 @@ module.exports = async function (context, req) {
     // Build Graph endpoint: upload in a path:
     // POST /sites/{siteId}/drive/root:/{itemPath}/{fileName}:/createUploadSession
     const targetPath = itemPath ? `${itemPath}/${fileName}` : fileName;
-    const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/drive/root:/${encodeURIComponent(targetPath)}:/createUploadSession`;
+    // const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/drive/root:/${encodeURIComponent(targetPath)}:/createUploadSession`;
+    // Example: Node.js/JavaScript (inside your Azure Function)
+    const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/drive/items/root:/${fileName}:/createUploadSession?@microsoft.graph.conflictBehavior=replace`;
 
     const bodyData = {
       item: {
