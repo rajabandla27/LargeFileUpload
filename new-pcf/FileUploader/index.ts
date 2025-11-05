@@ -1,8 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 
 // TODO: Configure these values in your environment
-const FUNCTION_URL = "YOUR_AZURE_FUNCTION_URL"; // Replace with your Azure Function URL
-const SITE_ID = "YOUR_SHAREPOINT_SITE_ID"; // Replace with your SharePoint Site ID
+const FUNCTION_URL = "https://func-fileupload-6271.azurewebsites.net/api/createUploadSession?code=functionkey"; // Replace with your Azure Function URL
 const ITEM_PATH = "Shared Documents"; // Target document library
 const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
 
@@ -12,11 +11,13 @@ export class FileUploader implements ComponentFramework.StandardControl<IInputs,
     private uploadButton: HTMLButtonElement;
     private statusDiv: HTMLDivElement;
     private selectedFile: File | null = null;
+    private context: ComponentFramework.Context<IInputs>;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     constructor() {}
 
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
+        this.context = context;
         this.container = container;
         this.container.style.cssText = "padding:20px;min-height:200px;font-family:Arial,sans-serif";
         
@@ -68,6 +69,14 @@ export class FileUploader implements ComponentFramework.StandardControl<IInputs,
     private async uploadFile(): Promise<void> {
         if (!this.selectedFile) return;
         
+        // Get Site ID from property
+        const siteId = this.context.parameters.siteUrl?.raw?.trim();
+        if (!siteId) {
+            this.statusDiv.textContent = "Please configure the Site ID property";
+            this.statusDiv.style.color = "#a80000";
+            return;
+        }
+        
         this.uploadButton.disabled = true;
         this.statusDiv.textContent = "Creating upload session...";
 
@@ -75,7 +84,7 @@ export class FileUploader implements ComponentFramework.StandardControl<IInputs,
             const sessionResponse = await fetch(FUNCTION_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ siteId: SITE_ID, fileName: this.selectedFile.name, itemPath: ITEM_PATH })
+                body: JSON.stringify({ siteId: siteId, fileName: this.selectedFile.name, itemPath: ITEM_PATH })
             });
 
             if (!sessionResponse.ok) throw new Error('Failed to create upload session: ' + sessionResponse.status);
@@ -110,6 +119,7 @@ export class FileUploader implements ComponentFramework.StandardControl<IInputs,
             }
         } catch (error) {
             this.statusDiv.textContent = 'Error: ' + error;
+            this.statusDiv.style.color = "#a80000";
         } finally {
             this.uploadButton.disabled = false;
         }

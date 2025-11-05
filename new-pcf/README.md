@@ -139,3 +139,13 @@ new-pcf/
 ## License
 
 This project is part of the LargeFileUpload solution.
+
+
+New-Item -ItemType Directory -Force -Path "C:\Users\rajab\Downloads\newpcf"; Copy-Item -Path "c:\Users\rajab\Downloads\FileUpload\new-pcf\out\*" -Destination "C:\Users\rajab\Downloads\newpcf" -Recurse -Force
+
+cd c:\Users\rajab\Downloads\newpcf; pac solution init --publisher-name RajPublisher --publisher-prefix raj
+
+pac solution add-reference --path c:\Users\rajab\Downloads\FileUpload\new-pcf
+
+dotnet build --configuration Release
+
